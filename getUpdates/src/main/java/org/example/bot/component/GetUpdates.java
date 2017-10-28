@@ -37,6 +37,7 @@ public class GetUpdates implements MessageLoader {
 
     public MessageResponse take(int updateId) {
         String url = urlGetUpdates + "?offset=" + updateId;
+
         return restTemplate.getForObject(url, MessageResponse.class);
     }
 }
