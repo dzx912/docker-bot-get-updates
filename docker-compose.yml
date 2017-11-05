@@ -1,0 +1,10 @@
+version: "3"
+services:
+
+  getterUpdates:
+    image: get-updates:latest
+
+  senderMessages:
+    image: send-message:latest
+    ports:
+      - 8080:8080
