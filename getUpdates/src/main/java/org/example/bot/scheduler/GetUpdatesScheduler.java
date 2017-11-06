@@ -35,7 +35,6 @@ public class GetUpdatesScheduler {
 
     private RestTemplate restTemplate;
 
-
     @PostConstruct
     private void setUp() {
         currentMessageId = 0;
@@ -54,6 +53,6 @@ public class GetUpdatesScheduler {
         // пусть он решает что с ними делать
         messages.getResult().stream().map(UpdateResultResponse::getMessage)
                 .map(message -> new MessageRequest(message.getFrom().getId(), message.getText()))
-                .forEach(request -> restTemplate.postForObject(urlBotBrain + "sendMessage", request, Message.class));
+                .forEach(request -> restTemplate.postForObject(urlBotBrain, request, Message.class));
     }
 }

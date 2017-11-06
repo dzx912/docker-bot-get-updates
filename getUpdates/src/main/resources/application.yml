@@ -2,4 +2,4 @@ token: 123
 
 urlTelegramMain: https://api.telegram.org/
 
-urlBotBrain: http://senderMessages:8080/
+urlBotBrain: http://botBrain:8080/

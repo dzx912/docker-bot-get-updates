@@ -4,7 +4,8 @@ services:
   getterUpdates:
     image: get-updates:latest
 
+  botBrain:
+      image: bot-brain:latest
+
   senderMessages:
     image: send-message:latest
-    ports:
-      - 8080:8080
