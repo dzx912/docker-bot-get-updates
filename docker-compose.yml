@@ -3,9 +3,13 @@ services:
 
   getterUpdates:
     image: get-updates:latest
+    volumes:
+      - ./data/application.yml:/opt/bot/config/application.yml
 
   botBrain:
       image: bot-brain:latest
 
   senderMessages:
     image: send-message:latest
+    volumes:
+      - ./data/application.yml:/opt/bot/config/application.yml
