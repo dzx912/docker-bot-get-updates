@@ -1,5 +1,1 @@
-include 'core'
-include 'getUpdates'
-include 'sendMessage'
-include 'botBrain'
-
+rootProject.name = 'botVote'
