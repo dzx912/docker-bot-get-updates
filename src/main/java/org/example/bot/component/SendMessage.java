@@ -42,11 +42,28 @@ public class SendMessage {
     }
 
     public void send(Message request) {
-        if (isMainChat(request)) {
-            forwardToMain(request);
-        } else {
+        boolean isMainChat = checkAndSetMainChat(request);
+        if (isMainChat) {
             broadcastToAll(request);
+        } else {
+            forwardToMain(request);
+            addToSetChatIds(request);
         }
+    }
+
+    private boolean checkAndSetMainChat(Message request) {
+        Integer chatId = request.getFrom().getId();
+        if (mainChatId == 0) {
+            mainChatId = chatId;
+        }
+
+        return mainChatId == chatId;
+    }
+
+    private void broadcastToAll(Message request) {
+        chatIds.stream()
+                .map(id -> new MessageRequest(id, request.getText()))
+                .forEach(message -> restTemplate.postForObject(urlSendText, message, Message.class));
     }
 
     private void forwardToMain(Message request) {
@@ -54,22 +71,12 @@ public class SendMessage {
         restTemplate.postForObject(urlForwardMessage, forwardToLeaderRequest, Message.class);
     }
 
-    private void broadcastToAll(Message request) {
+    private void addToSetChatIds(Message request) {
         chatIds.add(request.getFrom().getId());
-        chatIds.stream()
-                .map(id -> new MessageRequest(id, request.getText()))
-                .forEach(message -> restTemplate.postForObject(urlSendText, message, Message.class));
-    }
-
-    private boolean isMainChat(Message request) {
-        return mainChatId != 0 && mainChatId == request.getFrom().getId();
     }
 
     private ForwardMessageRequest generateMessage(Message request) {
         Integer fromChatId = request.getFrom().getId();
-        if (mainChatId == 0) {
-            mainChatId = fromChatId;
-        }
         return new ForwardMessageRequest(mainChatId, fromChatId, request.getMessageId());
     }
 }
